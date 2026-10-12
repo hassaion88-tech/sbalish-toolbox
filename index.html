@@ -5,102 +5,209 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10131c">
+  <meta name="description" content="Sbalish Toolbox - Minecraft Bedrock companion">
+  <link rel="manifest" href="./manifest.json">
   <title>Sbalish Toolbox</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
+      min-height: 100vh;
+      padding: 24px 16px;
       font-family: Arial, sans-serif;
       background: #10131c;
-      color: white;
-      padding: 24px 16px;
+      color: #fff;
     }
+
     .app {
       max-width: 480px;
       margin: 20px auto;
     }
+
     .logo {
-      width: 72px;
-      height: 72px;
+      width: 76px;
+      height: 76px;
       display: grid;
       place-items: center;
       margin: 0 auto 16px;
       border-radius: 22px;
-      background: #7c4dff;
-      font-size: 32px;
+      background: linear-gradient(135deg, #9b72ff, #5832d8);
+      font-size: 36px;
+      box-shadow: 0 8px 30px #7c4dff33;
     }
-    h1, .subtitle { text-align: center; }
-    h1 { margin-bottom: 8px; }
-    .subtitle { color: #aab0c5; }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #aab0c5;
+      line-height: 1.6;
+    }
+
     .panel {
       background: #1b2030;
       border: 1px solid #30364b;
       border-radius: 18px;
       padding: 20px;
-      margin-top: 24px;
+      margin-top: 26px;
     }
-    label { display: block; margin-bottom: 10px; }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
     select, button {
       width: 100%;
       padding: 14px;
       border-radius: 10px;
       font-size: 16px;
     }
+
     select {
       background: #10131c;
       color: white;
       border: 1px solid #414963;
     }
+
     button {
       border: 0;
       margin-top: 14px;
       background: #8b68ff;
       color: white;
       font-weight: bold;
+      cursor: pointer;
     }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
     .status {
-      color: #b6a4ff;
+      color: #c3b4ff;
       text-align: center;
+      line-height: 1.6;
       margin-top: 18px;
     }
+
+    .feature {
+      background: #1b2030;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 12px;
+      border: 1px solid #30364b;
+    }
+
+    .feature h3 {
+      margin: 0 0 8px;
+    }
+
+    .feature p, .note {
+      color: #aab0c5;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
     .note {
-      color: #9ca4ba;
-      font-size: 13px;
-      line-height: 1.6;
-      margin-top: 22px;
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    footer {
+      text-align: center;
+      color: #858da5;
+      font-size: 12px;
+      margin-top: 30px;
     }
   </style>
 </head>
+
 <body>
   <main class="app">
     <div class="logo">⚒️</div>
+
     <h1>Sbalish Toolbox</h1>
-    <p class="subtitle">Your Minecraft Bedrock companion</p>
+    <p class="subtitle">
+      Your Minecraft Bedrock companion
+    </p>
 
     <section class="panel">
       <label for="version">Minecraft Bedrock version</label>
+
       <select id="version">
         <option value="latest">Latest version</option>
         <option value="1.21">1.21</option>
         <option value="1.20">1.20</option>
       </select>
+
       <button id="check">Check Selection</button>
-      <p class="status" id="status">Welcome to Sbalish Toolbox!</p>
+
+      <p class="status" id="status" aria-live="polite">
+        Welcome to Sbalish Toolbox!
+      </p>
+    </section>
+
+    <section class="feature">
+      <h3>🎮 Version Selector</h3>
+      <p>Select a Minecraft Bedrock version to display your choice.</p>
+    </section>
+
+    <section class="feature">
+      <h3>🔄 Update Center</h3>
+      <p id="updateInfo">
+        Update checking is not connected yet.
+      </p>
+      <button id="update">Check Status</button>
+    </section>
+
+    <section class="feature">
+      <h3>🧰 Toolbox</h3>
+      <p>
+        This is the initial app interface. Game modifications
+        and Minecraft integration are not installed.
+      </p>
     </section>
 
     <p class="note">
-      This is an initial interface preview.
-      Version selection does not check for updates.
-      No game modifications are installed by this page.
+      Sbalish Toolbox · Initial Preview
     </p>
+
+    <footer>
+      Made for Minecraft Bedrock players
+    </footer>
   </main>
 
   <script>
-    document.getElementById("check").addEventListener("click", function () {
-      const version = document.getElementById("version").value;
-      document.getElementById("status").textContent =
-        "Selected version: " + version;
+    const versionSelect = document.getElementById("version");
+    const statusText = document.getElementById("status");
+    const updateInfo = document.getElementById("updateInfo");
+
+    document.getElementById("check").addEventListener("click", () => {
+      statusText.textContent =
+        "Selected version: " + versionSelect.value;
     });
+
+    document.getElementById("update").addEventListener("click", () => {
+      updateInfo.textContent =
+        "The update service has not been configured yet.";
+    });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+          .catch((error) => {
+            console.error("Service worker registration failed:", error);
+          });
+      });
+    }
   </script>
 </body>
 </html>
