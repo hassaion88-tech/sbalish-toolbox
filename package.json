@@ -3,8 +3,15 @@
   "name": "sbalish-toolbox",
   "version": "1.0.0",
   "private": true,
-  "description": "Sbalish Toolbox Android app",
+  "description": "Sbalish Toolbox Android application",
   "scripts": {
-    "build": "echo Web interface ready"
+    "build": "mkdir -p www && cp index.html manifest.json sw.js www/"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0"
   }
 }
