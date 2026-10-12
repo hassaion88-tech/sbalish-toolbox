@@ -2,212 +2,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10131c">
-  <meta name="description" content="Sbalish Toolbox - Minecraft Bedrock companion">
-  <link rel="manifest" href="./manifest.json">
-  <title>Sbalish Toolbox</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0912">
+<meta name="description" content="Sbalish Toolbox - Minecraft Bedrock companion">
+<link rel="manifest" href="./manifest.json">
+<title>Sbalish Toolbox</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 24px 16px;
-      font-family: Arial, sans-serif;
-      background: #10131c;
-      color: #fff;
-    }
-
-    .app {
-      max-width: 480px;
-      margin: 20px auto;
-    }
-
-    .logo {
-      width: 76px;
-      height: 76px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 16px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, #9b72ff, #5832d8);
-      font-size: 36px;
-      box-shadow: 0 8px 30px #7c4dff33;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #aab0c5;
-      line-height: 1.6;
-    }
-
-    .panel {
-      background: #1b2030;
-      border: 1px solid #30364b;
-      border-radius: 18px;
-      padding: 20px;
-      margin-top: 26px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    select, button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-
-    select {
-      background: #10131c;
-      color: white;
-      border: 1px solid #414963;
-    }
-
-    button {
-      border: 0;
-      margin-top: 14px;
-      background: #8b68ff;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .status {
-      color: #c3b4ff;
-      text-align: center;
-      line-height: 1.6;
-      margin-top: 18px;
-    }
-
-    .feature {
-      background: #1b2030;
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 12px;
-      border: 1px solid #30364b;
-    }
-
-    .feature h3 {
-      margin: 0 0 8px;
-    }
-
-    .feature p, .note {
-      color: #aab0c5;
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .note {
-      text-align: center;
-      margin-top: 24px;
-    }
-
-    footer {
-      text-align: center;
-      color: #858da5;
-      font-size: 12px;
-      margin-top: 30px;
-    }
-  </style>
+<style>
+:root {
+  --bg: #0b0912;
+  --panel: #171321;
+  --panel2: #211832;
+  --purple: #9b6bff;
+  --bright: #bd9bff;
+  --text: #f7f2ff;
+  --muted: #aaa0bd;
+  --border: #34264c;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 0%, #48207855, transparent 48%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, Arial, sans-serif;
+}
+button { font: inherit; cursor: pointer; }
+.app {
+  width: min(100%, 520px);
+  margin: auto;
+  padding: 25px 19px 105px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 28px;
+}
+.logo {
+  width: 55px;
+  height: 55px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 17px;
+  background: linear-gradient(145deg,#bd9bff,#6531c7);
+  box-shadow: 0 0 28px #9454ff44;
+}
+.logo svg { width: 35px; height: 35px; }
+.brand { font-size: 19px; font-weight: 850; letter-spacing: .3px; }
+.tagline {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+  letter-spacing: 1.5px;
+}
+.pill {
+  margin-left: auto;
+  color: var(--bright);
+  background: #241737;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 7px 10px;
+  font-size: 10px;
+}
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 25px 22px;
+  border-radius: 25px;
+  border: 1px solid #6c4190;
+  background: linear-gradient(135deg,#2a1940,#171121 72%);
+}
+.hero:after {
+  content: "✦";
+  position: absolute;
+  right: 18px;
+  top: 9px;
+  color: #a77aff;
+  font-size: 78px;
+  opacity: .18;
+}
+.eyebrow {
+  color: var(--bright);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.hero h1 {
+  font-size: clamp(27px,7vw,36px);
+  line-height: 1.13;
+  margin: 13px 0 10px;
+  max-width: 300px;
+}
+.hero p {
+  color: #c1b5d3;
+  line-height: 1.7;
+  font-size: 13px;
+  max-width: 300px;
+}
+.primary {
+  border: 0;
+  color: white;
+  font-weight: 800;
+  background: linear-gradient(100deg,#995cff,#7138d4);
+  border-radius: 13px;
+  padding: 13px 17px;
+  margin-top: 10px;
+  box-shadow: 0 6px 20px #7c3aed33;
+}
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 28px 1px 14px;
+}
+.section-head h2 { font-size: 17px; margin: 0; }
+.section-head span { font-size: 11px; color: var(--muted); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+}
+.tile {
+  text-align: left;
+  min-width: 0;
+  padding: 17px 14px;
+  min-height: 145px;
+  color: var(--text);
+  background: linear-gradient(145deg,#1d1729,#14101d);
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  transition: transform .15s,border-color .15s;
+}
+.tile:active { transform: scale(.97); }
+.tile:hover { border-color: var(--purple); }
+.tile-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  border-radius: 13px;
+  margin-bottom: 15px;
+  background: #382252;
+}
+.tile h3 { margin: 0 0 7px; font-size: 14px; }
+.tile p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.content-panel {
+  margin-top: 18px;
+  padding: 19px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 18px;
+}
+.content-panel h2 { font-size: 16px; margin: 0 0 10px; }
+.content-panel p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.status {
+  color: var(--bright);
+  font-size: 12px;
+  margin-top: 13px;
+  line-height: 1.6;
+}
+select, .secondary {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px;
+  background: #100d18;
+  color: white;
+}
+.secondary { margin-top: 10px; }
+.nav {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%,520px);
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  padding: 12px 9px calc(12px + env(safe-area-inset-bottom));
+  background: #100d18f5;
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+.nav button {
+  background: transparent;
+  color: var(--muted);
+  border: 0;
+  font-size: 10px;
+  padding: 5px 0;
+}
+.nav button span { display: block; font-size: 20px; margin-bottom: 5px; }
+.nav button.active { color: var(--bright); }
+.page { display: none; }
+.page.active { display: block; }
+.small { font-size: 11px; color: var(--muted); text-align: center; margin-top: 25px; }
+</style>
 </head>
-
 <body>
-  <main class="app">
-    <div class="logo">⚒️</div>
+<main class="app">
+  <header class="header">
+    <div class="logo" aria-label="Sbalish logo">
+      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M20 3 35 11.5V28.5L20 37 5 28.5V11.5Z"
+          stroke="#fff" stroke-width="2.4"/>
+        <path d="M5 11.5 20 20 35 11.5M20 20V37"
+          stroke="#fff" stroke-width="2.4"/>
+        <path d="M13 7 28 15.5 20 20 12 15.5Z" fill="#fff" opacity=".8"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand">SBALISH TOOLBOX</div>
+      <div class="tagline">BEDROCK COMPANION</div>
+    </div>
+    <div class="pill">BETA</div>
+  </header>
 
-    <h1>Sbalish Toolbox</h1>
-    <p class="subtitle">
-      Your Minecraft Bedrock companion
-    </p>
+  <section id="home" class="page active">
+    <div class="hero">
+      <div class="eyebrow">YOUR GAME. YOUR TOOLS.</div>
+      <h1>Your Minecraft toolkit.</h1>
+      <p>Explore useful guides, commands and resources for your Bedrock world.</p>
+      <button class="primary" onclick="showPage('tools')">Explore Toolbox ↗</button>
+    </div>
 
-    <section class="panel">
-      <label for="version">Minecraft Bedrock version</label>
+    <div class="section-head">
+      <h2>Explore Tools</h2>
+      <span>4 FEATURES</span>
+    </div>
 
-      <select id="version">
-        <option value="latest">Latest version</option>
+    <div class="grid">
+      <button class="tile" onclick="showPage('version')">
+        <div class="tile-icon">📘</div>
+        <h3>Version Guide</h3>
+        <p>Choose a version and view your selection.</p>
+      </button>
+      <button class="tile" onclick="showPage('commands')">
+        <div class="tile-icon">⌘</div>
+        <h3>Command Library</h3>
+        <p>Read useful Minecraft commands.</p>
+      </button>
+      <button class="tile" onclick="showPage('library')">
+        <div class="tile-icon">🧊</div>
+        <h3>Add-ons & Packs</h3>
+        <p>Explore resource categories.</p>
+      </button>
+      <button class="tile" onclick="showPage('tools')">
+        <div class="tile-icon">⚒️</div>
+        <h3>Crafting Helper</h3>
+        <p>Open the toolbox and crafting guide.</p>
+      </button>
+    </div>
+    <p class="small">Built for Bedrock players · Sbalish Toolbox</p>
+  </section>
+
+  <section id="tools" class="page">
+    <div class="section-head"><h2>Toolbox</h2><span>TOOLS</span></div>
+    <div class="content-panel">
+      <h2>⚒️ Crafting Helper</h2>
+      <p>Choose an item to view a basic crafting reminder.</p>
+      <select id="craftItem">
+        <option value="Pickaxe">Pickaxe</option>
+        <option value="Sword">Sword</option>
+        <option value="Torch">Torch</option>
+        <option value="Chest">Chest</option>
+      </select>
+      <button class="primary" onclick="craftInfo()">Show Guide</button>
+      <div id="craftStatus" class="status" aria-live="polite"></div>
+    </div>
+    <div class="content-panel">
+      <h2>Quick Note</h2>
+      <p>This toolbox is an independent companion. It does not modify Minecraft or install add-ons automatically.</p>
+    </div>
+  </section>
+
+  <section id="version" class="page">
+    <div class="section-head"><h2>Version Guide</h2><span>BEDROCK</span></div>
+    <div class="content-panel">
+      <h2>Choose a version</h2>
+      <select id="versionSelect">
+        <option value="Latest version">Latest version</option>
         <option value="1.21">1.21</option>
         <option value="1.20">1.20</option>
       </select>
+      <button class="primary" onclick="checkVersion()">Confirm Selection</button>
+      <div id="versionStatus" class="status" aria-live="polite">Choose a version to begin.</div>
+      <p>Version selection is informational; live update checking is not connected yet.</p>
+    </div>
+  </section>
 
-      <button id="check">Check Selection</button>
+  <section id="commands" class="page">
+    <div class="section-head"><h2>Command Library</h2><span>GUIDE</span></div>
+    <div class="content-panel">
+      <h2>/time set day</h2>
+      <p>Sets the in-game time to day when commands are enabled.</p>
+      <button class="secondary" onclick="copyCommand('/time set day')">Copy Command</button>
+    </div>
+    <div class="content-panel">
+      <h2>/weather clear</h2>
+      <p>Clears the weather in worlds where you have permission to use commands.</p>
+      <button class="secondary" onclick="copyCommand('/weather clear')">Copy Command</button>
+    </div>
+    <div class="content-panel">
+      <h2>/tp</h2>
+      <p>Teleport command. Its arguments depend on the target and coordinates.</p>
+      <button class="secondary" onclick="copyCommand('/tp')">Copy Command</button>
+    </div>
+    <div id="copyStatus" class="status" aria-live="polite"></div>
+  </section>
 
-      <p class="status" id="status" aria-live="polite">
-        Welcome to Sbalish Toolbox!
-      </p>
-    </section>
+  <section id="library" class="page">
+    <div class="section-head"><h2>Resource Library</h2><span>LIBRARY</span></div>
+    <div class="content-panel">
+      <h2>🧱 Resource Packs</h2>
+      <p>Resource packs can change textures and sounds. Use packs that match your Minecraft version and download them from trusted sources.</p>
+    </div>
+    <div class="content-panel">
+      <h2>🧩 Add-ons</h2>
+      <p>Add-ons can introduce behaviors or content. Check compatibility and review permissions before installing.</p>
+    </div>
+  </section>
 
-    <section class="feature">
-      <h3>🎮 Version Selector</h3>
-      <p>Select a Minecraft Bedrock version to display your choice.</p>
-    </section>
+  <section id="settings" class="page">
+    <div class="section-head"><h2>Settings</h2><span>APP</span></div>
+    <div class="content-panel">
+      <h2>SBALISH TOOLBOX</h2>
+      <p>Version 1.1.0 · Black & Purple Edition</p>
+      <p>Designed as a companion interface for Minecraft Bedrock players.</p>
+      <button class="secondary" onclick="showPage('home')">Back to Home</button>
+    </div>
+  </section>
+</main>
 
-    <section class="feature">
-      <h3>🔄 Update Center</h3>
-      <p id="updateInfo">
-        Update checking is not connected yet.
-      </p>
-      <button id="update">Check Status</button>
-    </section>
+<nav class="nav" aria-label="Main navigation">
+  <button class="active" data-page="home" onclick="showPage('home')"><span>⌂</span>Home</button>
+  <button data-page="tools" onclick="showPage('tools')"><span>⚒</span>Tools</button>
+  <button data-page="library" onclick="showPage('library')"><span>▦</span>Library</button>
+  <button data-page="settings" onclick="showPage('settings')"><span>⚙</span>Settings</button>
+</nav>
 
-    <section class="feature">
-      <h3>🧰 Toolbox</h3>
-      <p>
-        This is the initial app interface. Game modifications
-        and Minecraft integration are not installed.
-      </p>
-    </section>
+<script>
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.toggle("active", page.id === id);
+  });
+  document.querySelectorAll(".nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === id);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-    <p class="note">
-      Sbalish Toolbox · Initial Preview
-    </p>
+function checkVersion() {
+  const value = document.getElementById("versionSelect").value;
+  document.getElementById("versionStatus").textContent =
+    "Selected version: " + value + ". Live update checking is not enabled.";
+}
 
-    <footer>
-      Made for Minecraft Bedrock players
-    </footer>
-  </main>
+function craftInfo() {
+  const item = document.getElementById("craftItem").value;
+  const guides = {
+    Pickaxe: "A pickaxe uses 3 material items and 2 sticks in a crafting table.",
+    Sword: "A sword uses 2 material items and 1 stick.",
+    Torch: "A torch uses coal or charcoal above a stick.",
+    Chest: "A chest uses 8 wooden planks around the outer crafting slots."
+  };
+  document.getElementById("craftStatus").textContent = guides[item];
+}
 
-  <script>
-    const versionSelect = document.getElementById("version");
-    const statusText = document.getElementById("status");
-    const updateInfo = document.getElementById("updateInfo");
+async function copyCommand(command) {
+  const status = document.getElementById("copyStatus");
+  try {
+    await navigator.clipboard.writeText(command);
+    status.textContent = "Copied: " + command;
+  } catch (error) {
+    status.textContent = "Command: " + command + " (copy it manually if needed)";
+  }
+}
 
-    document.getElementById("check").addEventListener("click", () => {
-      statusText.textContent =
-        "Selected version: " + versionSelect.value;
-    });
-
-    document.getElementById("update").addEventListener("click", () => {
-      updateInfo.textContent =
-        "The update service has not been configured yet.";
-    });
-
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
-          .catch((error) => {
-            console.error("Service worker registration failed:", error);
-          });
-      });
-    }
-  </script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+</script>
 </body>
 </html>
