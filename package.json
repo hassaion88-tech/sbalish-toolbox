@@ -1,0 +1,10 @@
+
+{
+  "name": "sbalish-toolbox",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sbalish Toolbox Android app",
+  "scripts": {
+    "build": "echo Web interface ready"
+  }
+}
