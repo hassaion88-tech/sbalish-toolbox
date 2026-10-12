@@ -2,257 +2,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090710">
-<title>Sbalish Client | Click GUI</title>
-<style>
-:root {
-  --bg:#090710;
-  --panel:#14101f;
-  --panel2:#1c162b;
-  --purple:#a855f7;
-  --text:#f5f0ff;
-  --muted:#a69ab9;
-  --border:#302440;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;min-height:100vh;
-}
-header{
-  padding:22px 17px 16px;
-  background:linear-gradient(135deg,#211037,#0d0a16);
-  border-bottom:1px solid var(--border);
-}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{
-  width:46px;height:46px;border-radius:14px;
-  display:grid;place-items:center;
-  background:linear-gradient(135deg,#c084fc,#7028d9);
-  color:white;font-size:23px;font-weight:900;
-  box-shadow:0 0 24px #a855f744;
-}
-h1{font-size:20px;margin:0 0 5px}
-.subtitle{font-size:12px;color:var(--muted)}
-.status{
-  margin-top:16px;display:flex;justify-content:space-between;
-  gap:8px;font-size:12px;color:var(--muted);
-}
-.status b{color:#d8b4fe}
-main{padding:16px;max-width:700px;margin:auto}
-.search{
-  width:100%;padding:14px;border-radius:12px;
-  border:1px solid var(--border);background:var(--panel);
-  color:var(--text);font-size:15px;outline:none;
-}
-.search:focus{border-color:var(--purple)}
-.tabs{
-  display:flex;gap:8px;overflow-x:auto;
-  padding:14px 0;scrollbar-width:none;
-}
-.tab{
-  white-space:nowrap;border:1px solid var(--border);
-  background:var(--panel);color:var(--muted);
-  border-radius:10px;padding:10px 13px;font-size:12px;
-}
-.tab.active{
-  color:white;background:#512080;border-color:var(--purple);
-}
-.section-title{
-  display:flex;justify-content:space-between;align-items:center;
-  margin:12px 0;font-size:14px;font-weight:bold;
-}
-.section-title small{color:var(--muted);font-weight:normal}
-.feature{
-  display:flex;align-items:center;gap:12px;
-  padding:14px;margin-bottom:9px;border-radius:14px;
-  background:var(--panel);border:1px solid var(--border);
-}
-.feature-icon{
-  width:43px;height:43px;flex-shrink:0;
-  display:grid;place-items:center;border-radius:12px;
-  background:var(--panel2);font-size:20px;
-}
-.info{flex:1;min-width:0}
-.info strong{display:block;font-size:14px;margin-bottom:5px}
-.info small{color:var(--muted);font-size:11px}
-.switch{
-  width:47px;height:27px;flex-shrink:0;border:0;
-  border-radius:30px;background:#393144;padding:3px;
-  transition:.2s;cursor:pointer;
-}
-.switch span{
-  display:block;width:21px;height:21px;border-radius:50%;
-  background:white;transition:.2s;
-}
-.switch.on{background:var(--purple)}
-.switch.on span{transform:translateX(20px)}
-.notice{
-  margin-top:18px;padding:13px;border-radius:12px;
-  background:#171020;border:1px solid #453054;
-  color:#c4b5d7;font-size:12px;line-height:1.6;
-}
-footer{text-align:center;color:#756986;font-size:11px;padding:22px}
-.empty{padding:25px;text-align:center;color:var(--muted)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090711">
+  <title>Sbalish Click GUI</title>
+  <style>
+    :root {
+      --bg: #090711;
+      --panel: #151222;
+      --panel2: #201832;
+      --purple: #a15cff;
+      --text: #f7f2ff;
+      --muted: #a69bbd;
+      --border: #342544;
+      --green: #7bffbd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at top, #211338 0%, #090711 48%);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .app { max-width: 600px; margin: auto; padding: 18px 14px 35px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .brand { font-size: 19px; font-weight: 900; letter-spacing: 1px; }
+    .brand span { color: var(--purple); }
+    .subtitle { color: var(--muted); font-size: 10px; letter-spacing: 2px; margin-top: 5px; }
+    .back {
+      color: white; background: #211832; border: 1px solid #49315f;
+      border-radius: 10px; padding: 10px 12px;
+    }
+    .hero {
+      margin: 22px 0 16px; padding: 20px;
+      border: 1px solid #49315f; border-radius: 18px;
+      background: linear-gradient(130deg, #2b1943, #151020);
+    }
+    .badge {
+      display: inline-block; padding: 5px 9px; border-radius: 20px;
+      color: #d9b8ff; background: #37204f; font-size: 10px;
+      letter-spacing: 1px;
+    }
+    h1 { font-size: 27px; margin: 12px 0 6px; }
+    p { color: var(--muted); line-height: 1.5; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+    .stat { padding: 12px 5px; text-align: center; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
+    .stat strong { display: block; font-size: 19px; }
+    .stat span { color: var(--muted); font-size: 10px; }
+    .search {
+      width: 100%; padding: 13px; color: white; background: #100d19;
+      border: 1px solid var(--border); border-radius: 11px; outline: none;
+    }
+    .tabs { display: flex; gap: 7px; overflow-x: auto; padding: 13px 0; }
+    .tab {
+      flex-shrink: 0; padding: 9px 13px; color: var(--muted);
+      border: 1px solid var(--border); background: var(--panel);
+      border-radius: 10px;
+    }
+    .tab.active { color: white; background: #4a2670; border-color: var(--purple); }
+    .group-title { color: #c9a4ff; font-size: 11px; letter-spacing: 2px; margin: 18px 0 10px; }
+    .feature {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px; margin-bottom: 9px;
+      background: linear-gradient(110deg, var(--panel), #110e1b);
+      border: 1px solid var(--border); border-radius: 14px;
+    }
+    .feature-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      display: grid; place-items: center; font-size: 20px;
+      background: var(--panel2); border: 1px solid #3d2b53;
+      border-radius: 12px;
+    }
+    .feature-info { min-width: 0; flex: 1; }
+    .feature-info h3 { font-size: 14px; margin: 0 0 5px; }
+    .feature-info p { font-size: 11px; margin: 0; }
+    .toggle {
+      position: relative; width: 46px; height: 26px; flex-shrink: 0;
+      border: 1px solid #51435e; background: #332a3e;
+      border-radius: 30px; transition: .2s;
+    }
+    .toggle::after {
+      content: ""; position: absolute; width: 18px; height: 18px;
+      left: 3px; top: 3px; border-radius: 50%;
+      background: #b3a8c2; transition: .2s;
+    }
+    .toggle.on { background: #6337a0; border-color: var(--purple); }
+    .toggle.on::after { left: 23px; background: white; }
+    .toggle:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+    .footer { margin-top: 20px; padding: 14px; text-align: center; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 12px; }
+    .empty { padding: 24px; text-align: center; color: var(--muted); }
+    .reset { margin-top: 12px; padding: 10px 12px; color: white; background: #211832; border: 1px solid #49315f; border-radius: 10px; }
+  </style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <div class="logo">S</div>
+<div class="app">
+  <header>
     <div>
-      <h1>SBALISH CLIENT</h1>
-      <div class="subtitle">BEDROCK • CLICK GUI</div>
+      <div class="brand">SBALISH <span>CLIENT</span></div>
+      <div class="subtitle">CLICK GUI · BEDROCK COMPANION</div>
     </div>
-  </div>
-  <div class="status">
-    <span>CLIENT <b>PROTOTYPE</b></span>
-    <span id="counter">0 ENABLED</span>
-  </div>
-</header>
+    <button class="back" onclick="goBack()">← Back</button>
+  </header>
 
-<main>
-  <input id="search" class="search"
-    placeholder="⌕  Search features..."
-    aria-label="Search features">
+  <section class="hero">
+    <span class="badge">BETA INTERFACE</span>
+    <h1>Click GUI</h1>
+    <p>Manage your visible feature preferences from one menu.</p>
+    <div class="stats">
+      <div class="stat"><strong id="totalCount">0</strong><span>FEATURES</span></div>
+      <div class="stat"><strong id="enabledCount">0</strong><span>ENABLED</span></div>
+      <div class="stat"><strong>1.0</strong><span>VERSION</span></div>
+    </div>
+  </section>
+
+  <input id="search" class="search" type="search" placeholder="Search features..." autocomplete="off">
 
   <div class="tabs" id="tabs">
-    <button class="tab active" data-category="All">All</button>
+    <button class="tab active" data-category="All">All Features</button>
     <button class="tab" data-category="HUD">HUD</button>
     <button class="tab" data-category="Movement">Movement</button>
     <button class="tab" data-category="Utility">Utility</button>
   </div>
 
-  <div class="section-title">
-    <span id="sectionName">ALL FEATURES</span>
-    <small id="shown">0 features</small>
+  <div id="featureList"></div>
+
+  <button class="reset" id="resetButton">Reset all switches</button>
+
+  <div class="footer">
+    Prototype interface only. These switches save their visual state on this device.
+    They do not inject into, modify, or control Minecraft.
   </div>
-
-  <div id="features"></div>
-
-  <div class="notice">
-    <b>Prototype mode</b><br>
-    These switches control this interface only.
-    They do not activate modifications inside Minecraft yet.
-    Close and reopen this page to test saved settings.
-  </div>
-</main>
-
-<footer>SBALISH CLIENT • MADE FOR BEDROCK</footer>
+</div>
 
 <script>
-const featureData = [
-  {id:"hud",name:"Custom HUD",icon:"▦",cat:"HUD",
-   desc:"HUD display prototype"},
-  {id:"keystrokes",name:"Keystrokes",icon:"⌨",cat:"HUD",
-   desc:"Movement key display prototype"},
-  {id:"fps",name:"FPS Counter",icon:"◷",cat:"HUD",
-   desc:"Performance display prototype"},
-  {id:"sprint",name:"Sprint",icon:"➜",cat:"Movement",
-   desc:"Movement feature prototype"},
-  {id:"toggle_sprint",name:"Toggle Sprint",icon:"⚡",cat:"Movement",
-   desc:"Sprint toggle prototype"},
-  {id:"coordinates",name:"Coordinates",icon:"⌖",cat:"Utility",
-   desc:"Coordinate display prototype"},
-  {id:"waypoints",name:"Waypoints",icon:"◇",cat:"Utility",
-   desc:"Waypoint manager prototype"}
-];
+  const features = [
+    { id: 'custom-hud', name: 'Custom HUD', icon: '▦', category: 'HUD', description: 'Prototype HUD preference switch.' },
+    { id: 'keystrokes', name: 'Keystrokes', icon: '⌨️', category: 'HUD', description: 'Toggle the keystrokes display preference.' },
+    { id: 'fps-counter', name: 'FPS Counter', icon: '📊', category: 'HUD', description: 'Toggle the FPS display preference.' },
+    { id: 'coordinates', name: 'Coordinates', icon: '⌖', category: 'HUD', description: 'Toggle the coordinates display preference.' },
+    { id: 'armor-hud', name: 'Armor HUD', icon: '🛡️', category: 'HUD', description: 'Toggle the armor display preference.' },
+    { id: 'sprint', name: 'Sprint', icon: '🏃', category: 'Movement', description: 'Save your sprint preference.' },
+    { id: 'toggle-sprint', name: 'Toggle Sprint', icon: '⚡', category: 'Movement', description: 'Save the toggle-sprint preference.' },
+    { id: 'motion-effects', name: 'Motion Effects', icon: '〰️', category: 'Movement', description: 'Save a visual motion preference.' },
+    { id: 'waypoints', name: 'Waypoints', icon: '📍', category: 'Utility', description: 'Save your waypoint feature preference.' },
+    { id: 'quick-tools', name: 'Quick Tools', icon: '🧰', category: 'Utility', description: 'Save the quick-tools preference.' },
+    { id: 'chat-helper', name: 'Chat Helper', icon: '💬', category: 'Utility', description: 'Save the chat-helper preference.' },
+    { id: 'compact-menu', name: 'Compact Menu', icon: '▤', category: 'Utility', description: 'Save a compact-menu preference.' }
+  ];
 
-let currentCategory = "All";
-let enabled = {};
+  let selectedCategory = 'All';
+  let enabled = {};
 
-try {
-  enabled = JSON.parse(
-    localStorage.getItem("sbalish-clickgui") || "{}"
-  );
-} catch(e) {
-  enabled = {};
-}
-
-const list = document.getElementById("features");
-const search = document.getElementById("search");
-
-function render() {
-  const query = search.value.trim().toLowerCase();
-  const filtered = featureData.filter(f =>
-    (currentCategory === "All" || f.cat === currentCategory) &&
-    (f.name.toLowerCase().includes(query) ||
-     f.desc.toLowerCase().includes(query))
-  );
-
-  list.innerHTML = "";
-  document.getElementById("sectionName").textContent =
-    currentCategory.toUpperCase() + " FEATURES";
-  document.getElementById("shown").textContent =
-    filtered.length + " features";
-
-  document.getElementById("counter").textContent =
-    Object.values(enabled).filter(Boolean).length + " ENABLED";
-
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty">No features found</div>';
-    return;
+  try {
+    enabled = JSON.parse(localStorage.getItem('sbalish-clickgui-state') || '{}');
+    if (!enabled || typeof enabled !== 'object' || Array.isArray(enabled)) enabled = {};
+  } catch (error) {
+    enabled = {};
   }
 
-  filtered.forEach(f => {
-    const active = !!enabled[f.id];
-    const card = document.createElement("div");
-    card.className = "feature";
+  const list = document.getElementById('featureList');
+  const search = document.getElementById('search');
 
-    const icon = document.createElement("div");
-    icon.className = "feature-icon";
-    icon.textContent = f.icon;
+  function saveState() {
+    try {
+      localStorage.setItem('sbalish-clickgui-state', JSON.stringify(enabled));
+    } catch (error) {}
+  }
 
-    const info = document.createElement("div");
-    info.className = "info";
+  function updateStats() {
+    document.getElementById('totalCount').textContent = features.length;
+    document.getElementById('enabledCount').textContent =
+      features.filter(feature => enabled[feature.id] === true).length;
+  }
 
-    const title = document.createElement("strong");
-    title.textContent = f.name;
+  function renderFeatures() {
+    const query = search.value.trim().toLowerCase();
 
-    const desc = document.createElement("small");
-    desc.textContent = f.desc;
-
-    info.append(title, desc);
-
-    const button = document.createElement("button");
-    button.className = "switch" + (active ? " on" : "");
-    button.type = "button";
-    button.setAttribute("role", "switch");
-    button.setAttribute("aria-checked", String(active));
-    button.setAttribute("aria-label", "Toggle " + f.name);
-
-    const knob = document.createElement("span");
-    button.appendChild(knob);
-
-    button.addEventListener("click", () => {
-      enabled[f.id] = !enabled[f.id];
-      try {
-        localStorage.setItem(
-          "sbalish-clickgui", JSON.stringify(enabled)
-        );
-      } catch(e) {}
-      render();
+    const visible = features.filter(feature => {
+      const matchesCategory = selectedCategory === 'All' || feature.category === selectedCategory;
+      const matchesSearch = (feature.name + ' ' + feature.description + ' ' + feature.category)
+        .toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
     });
 
-    card.append(icon, info, button);
-    list.appendChild(card);
-  });
-}
+    list.innerHTML = '';
 
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    currentCategory = tab.dataset.category;
-    document.querySelectorAll(".tab").forEach(t =>
-      t.classList.toggle("active", t === tab)
-    );
-    render();
-  });
-});
+    if (visible.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = 'No matching features found.';
+      list.appendChild(empty);
+      updateStats();
+      return;
+    }
 
-search.addEventListener("input", render);
-render();
+    let lastCategory = '';
+
+    visible.forEach(feature => {
+      if (selectedCategory === 'All' && feature.category !== lastCategory) {
+        lastCategory = feature.category;
+        const heading = document.createElement('div');
+        heading.className = 'group-title';
+        heading.textContent = feature.category.toUpperCase();
+        list.appendChild(heading);
+      }
+
+      const row = document.createElement('div');
+      row.className = 'feature';
+
+      const icon = document.createElement('div');
+      icon.className = 'feature-icon';
+      icon.textContent = feature.icon;
+
+      const info = document.createElement('div');
+      info.className = 'feature-info';
+
+      const title = document.createElement('h3');
+      title.textContent = feature.name;
+
+      const description = document.createElement('p');
+      description.textContent = feature.description;
+
+      info.append(title, description);
+
+      const toggle = document.createElement('button');
+      const isOn = enabled[feature.id] === true;
+      toggle.className = 'toggle' + (isOn ? ' on' : '');
+      toggle.type = 'button';
+      toggle.setAttribute('role', 'switch');
+      toggle.setAttribute('aria-checked', String(isOn));
+      toggle.setAttribute('aria-label', feature.name);
+
+      toggle.addEventListener('click', () => {
+        enabled[feature.id] = !(enabled[feature.id] === true);
+        saveState();
+        renderFeatures();
+      });
+
+      row.append(icon, info, toggle);
+      list.appendChild(row);
+    });
+
+    updateStats();
+  }
+
+  document.getElementById('tabs').addEventListener('click', event => {
+    const button = event.target.closest('button[data-category]');
+    if (!button) return;
+
+    selectedCategory = button.dataset.category;
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab === button);
+    });
+
+    renderFeatures();
+  });
+
+  search.addEventListener('input', renderFeatures);
+
+  document.getElementById('resetButton').addEventListener('click', () => {
+    enabled = {};
+    saveState();
+    renderFeatures();
+  });
+
+  function goBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = './index.html';
+    }
+  }
+
+  renderFeatures();
 </script>
 </body>
 </html>
