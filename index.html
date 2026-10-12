@@ -30,7 +30,12 @@ body {
   color: var(--text);
   font-family: system-ui, Arial, sans-serif;
 }
-button { font: inherit; cursor: pointer; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--bright);
+  outline-offset: 3px;
+}
 .app {
   width: min(100%, 520px);
   margin: auto;
@@ -85,6 +90,7 @@ button { font: inherit; cursor: pointer; }
   color: #a77aff;
   font-size: 78px;
   opacity: .18;
+  pointer-events: none;
 }
 .eyebrow {
   color: var(--bright);
@@ -114,10 +120,12 @@ button { font: inherit; cursor: pointer; }
   margin-top: 10px;
   box-shadow: 0 6px 20px #7c3aed33;
 }
+.primary:active, .secondary:active { transform: scale(.98); }
 .section-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   margin: 28px 1px 14px;
 }
 .section-head h2 { font-size: 17px; margin: 0; }
@@ -166,6 +174,7 @@ button { font: inherit; cursor: pointer; }
   font-size: 12px;
   margin-top: 13px;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 select, .secondary {
   width: 100%;
@@ -202,8 +211,78 @@ select, .secondary {
 .page { display: none; }
 .page.active { display: block; }
 .small { font-size: 11px; color: var(--muted); text-align: center; margin-top: 25px; }
+
+/* Command Library */
+.command-controls {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.command-search {
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  color: var(--text);
+  background: #100d18;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  font: inherit;
+}
+.command-search:focus { border-color: var(--purple); }
+.command-category { width: 100%; }
+.command-card {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: linear-gradient(145deg,#1d1729,#14101d);
+  border-radius: 16px;
+}
+.command-card h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.command-card p {
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.command-code {
+  display: block;
+  padding: 11px;
+  margin-top: 10px;
+  color: #d8c3ff;
+  background: #0b0912;
+  border: 1px solid #34264c;
+  border-radius: 10px;
+  font-family: monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+.command-card .secondary { margin-top: 12px; }
+.command-note {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.command-empty {
+  padding: 20px 10px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
 </style>
 </head>
+
 <body>
 <main class="app">
   <header class="header">
@@ -213,7 +292,8 @@ select, .secondary {
           stroke="#fff" stroke-width="2.4"/>
         <path d="M5 11.5 20 20 35 11.5M20 20V37"
           stroke="#fff" stroke-width="2.4"/>
-        <path d="M13 7 28 15.5 20 20 12 15.5Z" fill="#fff" opacity=".8"/>
+        <path d="M13 7 28 15.5 20 20 12 15.5Z"
+          fill="#fff" opacity=".8"/>
       </svg>
     </div>
     <div>
@@ -245,7 +325,7 @@ select, .secondary {
       <button class="tile" onclick="showPage('commands')">
         <div class="tile-icon">⌘</div>
         <h3>Command Library</h3>
-        <p>Read useful Minecraft commands.</p>
+        <p>Search, filter and copy useful commands.</p>
       </button>
       <button class="tile" onclick="showPage('library')">
         <div class="tile-icon">🧊</div>
@@ -278,6 +358,7 @@ select, .secondary {
     <div class="content-panel">
       <h2>Quick Note</h2>
       <p>This toolbox is an independent companion. It does not modify Minecraft or install add-ons automatically.</p>
+      <button class="secondary" onclick="showPage('commands')">Open Command Library</button>
     </div>
   </section>
 
@@ -297,23 +378,48 @@ select, .secondary {
   </section>
 
   <section id="commands" class="page">
-    <div class="section-head"><h2>Command Library</h2><span>GUIDE</span></div>
-    <div class="content-panel">
-      <h2>/time set day</h2>
-      <p>Sets the in-game time to day when commands are enabled.</p>
-      <button class="secondary" onclick="copyCommand('/time set day')">Copy Command</button>
+    <div class="section-head">
+      <h2>Command Library</h2>
+      <span id="commandCount">0 COMMANDS</span>
     </div>
+
     <div class="content-panel">
-      <h2>/weather clear</h2>
-      <p>Clears the weather in worlds where you have permission to use commands.</p>
-      <button class="secondary" onclick="copyCommand('/weather clear')">Copy Command</button>
+      <h2>⌘ Find a Command</h2>
+      <p>Search commands and copy them into your Minecraft world.</p>
+
+      <div class="command-controls">
+        <input
+          id="commandSearch"
+          class="command-search"
+          type="search"
+          placeholder="Search commands..."
+          aria-label="Search commands"
+          oninput="renderCommands()"
+        >
+        <select
+          id="commandCategory"
+          class="command-category"
+          aria-label="Filter commands"
+          onchange="renderCommands()"
+        >
+          <option value="all">All Categories</option>
+          <option value="time">Time</option>
+          <option value="weather">Weather</option>
+          <option value="teleport">Teleport</option>
+          <option value="gameplay">Gameplay</option>
+          <option value="items">Items</option>
+          <option value="world">World</option>
+        </select>
+      </div>
+
+      <p class="command-note">
+        Some commands require cheats to be enabled and suitable permissions.
+        Availability may vary by Minecraft version and world settings.
+      </p>
     </div>
-    <div class="content-panel">
-      <h2>/tp</h2>
-      <p>Teleport command. Its arguments depend on the target and coordinates.</p>
-      <button class="secondary" onclick="copyCommand('/tp')">Copy Command</button>
-    </div>
-    <div id="copyStatus" class="status" aria-live="polite"></div>
+
+    <div id="commandList"></div>
+    <div id="copyStatus" class="status" role="status" aria-live="polite"></div>
   </section>
 
   <section id="library" class="page">
@@ -332,7 +438,7 @@ select, .secondary {
     <div class="section-head"><h2>Settings</h2><span>APP</span></div>
     <div class="content-panel">
       <h2>SBALISH TOOLBOX</h2>
-      <p>Version 1.1.0 · Black & Purple Edition</p>
+      <p>Version 1.2.0 · Black & Purple Edition</p>
       <p>Designed as a companion interface for Minecraft Bedrock players.</p>
       <button class="secondary" onclick="showPage('home')">Back to Home</button>
     </div>
@@ -351,38 +457,250 @@ function showPage(id) {
   document.querySelectorAll(".page").forEach(page => {
     page.classList.toggle("active", page.id === id);
   });
+
   document.querySelectorAll(".nav button").forEach(button => {
     button.classList.toggle("active", button.dataset.page === id);
   });
+
+  if (id === "commands") renderCommands();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function checkVersion() {
   const value = document.getElementById("versionSelect").value;
   document.getElementById("versionStatus").textContent =
-    "Selected version: " + value + ". Live update checking is not enabled.";
+    "Selected version: " + value +
+    ". Live update checking is not enabled.";
 }
 
 function craftInfo() {
   const item = document.getElementById("craftItem").value;
   const guides = {
-    Pickaxe: "A pickaxe uses 3 material items and 2 sticks in a crafting table.",
+    Pickaxe: "A pickaxe uses 3 material items and 2 sticks in a crafting table. The material determines its type.",
     Sword: "A sword uses 2 material items and 1 stick.",
     Torch: "A torch uses coal or charcoal above a stick.",
     Chest: "A chest uses 8 wooden planks around the outer crafting slots."
   };
+
   document.getElementById("craftStatus").textContent = guides[item];
+}
+
+const commandData = [
+  {
+    title: "Set Day",
+    command: "/time set day",
+    category: "time",
+    description: "Changes the in-game time to day.",
+    note: "Requires command permissions."
+  },
+  {
+    title: "Set Night",
+    command: "/time set night",
+    category: "time",
+    description: "Changes the in-game time to night.",
+    note: "Requires command permissions."
+  },
+  {
+    title: "Set Noon",
+    command: "/time set noon",
+    category: "time",
+    description: "Sets the in-game time to noon.",
+    note: "Requires command permissions."
+  },
+  {
+    title: "Clear Weather",
+    command: "/weather clear",
+    category: "weather",
+    description: "Clears rain and thunderstorms.",
+    note: "Requires command permissions."
+  },
+  {
+    title: "Rainy Weather",
+    command: "/weather rain",
+    category: "weather",
+    description: "Changes the weather to rain.",
+    note: "Requires command permissions."
+  },
+  {
+    title: "Thunderstorm",
+    command: "/weather thunder",
+    category: "weather",
+    description: "Changes the weather to a thunderstorm.",
+    note: "Requires command permissions."
+  },
+  {
+    title: "Teleport Example",
+    command: "/tp @s 100 64 100",
+    category: "teleport",
+    description: "Teleports yourself to the example coordinates.",
+    note: "Replace 100 64 100 with your desired coordinates."
+  },
+  {
+    title: "Creative Mode",
+    command: "/gamemode creative @s",
+    category: "gameplay",
+    description: "Switches your game mode to Creative.",
+    note: "Requires permission to change game mode."
+  },
+  {
+    title: "Survival Mode",
+    command: "/gamemode survival @s",
+    category: "gameplay",
+    description: "Switches your game mode to Survival.",
+    note: "Requires permission to change game mode."
+  },
+  {
+    title: "Adventure Mode",
+    command: "/gamemode adventure @s",
+    category: "gameplay",
+    description: "Switches your game mode to Adventure.",
+    note: "Requires permission to change game mode."
+  },
+  {
+    title: "Give Diamonds",
+    command: "/give @s diamond 1",
+    category: "items",
+    description: "Gives yourself one diamond.",
+    note: "Requires permission to use /give."
+  },
+  {
+    title: "Give Golden Apple",
+    command: "/give @s golden_apple 1",
+    category: "items",
+    description: "Gives yourself one golden apple.",
+    note: "Requires permission to use /give."
+  },
+  {
+    title: "Give Torches",
+    command: "/give @s torch 64",
+    category: "items",
+    description: "Gives yourself 64 torches.",
+    note: "Requires permission to use /give."
+  },
+  {
+    title: "Set World Spawn",
+    command: "/setworldspawn",
+    category: "world",
+    description: "Sets the world spawn near your current position.",
+    note: "Requires command permissions."
+  },
+  {
+    title: "Keep Inventory",
+    command: "/gamerule keepinventory true",
+    category: "world",
+    description: "Keeps inventory after death where supported.",
+    note: "Requires permission to change game rules."
+  },
+  {
+    title: "Disable Keep Inventory",
+    command: "/gamerule keepinventory false",
+    category: "world",
+    description: "Disables the keep-inventory game rule.",
+    note: "Requires permission to change game rules."
+  },
+  {
+    title: "Show Coordinates",
+    command: "/gamerule showcoordinates true",
+    category: "world",
+    description: "Attempts to enable coordinate display.",
+    note: "Requires permission. Availability depends on version and world settings."
+  }
+];
+
+function renderCommands() {
+  const list = document.getElementById("commandList");
+  const searchInput = document.getElementById("commandSearch");
+  const categoryInput = document.getElementById("commandCategory");
+  const count = document.getElementById("commandCount");
+
+  if (!list || !searchInput || !categoryInput || !count) return;
+
+  const query = searchInput.value.trim().toLowerCase();
+  const category = categoryInput.value;
+
+  const filtered = commandData.filter(item => {
+    const matchesCategory =
+      category === "all" || item.category === category;
+
+    const searchable =
+      (item.title + " " + item.command + " " +
+       item.description + " " + item.note).toLowerCase();
+
+    return matchesCategory && searchable.includes(query);
+  });
+
+  count.textContent = filtered.length + " COMMANDS";
+
+  list.replaceChildren();
+
+  if (filtered.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "command-empty";
+    empty.textContent = "No commands found. Try another search.";
+    list.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "command-card";
+
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+
+    const description = document.createElement("p");
+    description.textContent = item.description;
+
+    const code = document.createElement("code");
+    code.className = "command-code";
+    code.textContent = item.command;
+
+    const note = document.createElement("p");
+    note.className = "command-note";
+    note.textContent = "Note: " + item.note;
+
+    const button = document.createElement("button");
+    button.className = "secondary";
+    button.type = "button";
+    button.textContent = "Copy Command";
+    button.addEventListener("click", () => copyCommand(item.command));
+
+    card.append(title, description, code, note, button);
+    list.appendChild(card);
+  });
 }
 
 async function copyCommand(command) {
   const status = document.getElementById("copyStatus");
+
   try {
-    await navigator.clipboard.writeText(command);
-    status.textContent = "Copied: " + command;
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(command);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = command;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      textarea.style.pointerEvents = "none";
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      const copied = document.execCommand("copy");
+      textarea.remove();
+
+      if (!copied) throw new Error("Clipboard unavailable");
+    }
+
+    status.textContent = "✓ Copied: " + command;
   } catch (error) {
-    status.textContent = "Command: " + command + " (copy it manually if needed)";
+    status.textContent =
+      "Automatic copy failed. Select and copy this command: " + command;
   }
 }
+
+renderCommands();
 
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
   window.addEventListener("load", () => {
