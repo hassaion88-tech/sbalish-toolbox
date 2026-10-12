@@ -1,0 +1,11 @@
+
+{
+  "name": "Sbalish Toolbox",
+  "short_name": "Sbalish",
+  "description": "Minecraft Bedrock companion",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#10131c",
+  "theme_color": "#10131c",
+  "orientation": "portrait"
+}
