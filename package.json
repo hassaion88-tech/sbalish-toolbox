@@ -5,7 +5,7 @@
   "private": true,
   "description": "Sbalish Toolbox Android application",
   "scripts": {
-    "build": "mkdir -p www && cp index.html manifest.json sw.js www/"
+    "build": "mkdir -p www && cp index.html clickgui.html manifest.json sw.js www/"
   },
   "dependencies": {
     "@capacitor/android": "^6.2.0",
