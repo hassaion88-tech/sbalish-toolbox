@@ -2,711 +2,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b0912">
-<meta name="description" content="Sbalish Toolbox - Minecraft Bedrock companion">
-<link rel="manifest" href="./manifest.json">
-<title>Sbalish Toolbox</title>
-
-<style>
-:root {
-  --bg: #0b0912;
-  --panel: #171321;
-  --panel2: #211832;
-  --purple: #9b6bff;
-  --bright: #bd9bff;
-  --text: #f7f2ff;
-  --muted: #aaa0bd;
-  --border: #34264c;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 50% 0%, #48207855, transparent 48%),
-    var(--bg);
-  color: var(--text);
-  font-family: system-ui, Arial, sans-serif;
-}
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-button:focus-visible, input:focus-visible, select:focus-visible {
-  outline: 2px solid var(--bright);
-  outline-offset: 3px;
-}
-.app {
-  width: min(100%, 520px);
-  margin: auto;
-  padding: 25px 19px 105px;
-}
-.header {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin-bottom: 28px;
-}
-.logo {
-  width: 55px;
-  height: 55px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  border-radius: 17px;
-  background: linear-gradient(145deg,#bd9bff,#6531c7);
-  box-shadow: 0 0 28px #9454ff44;
-}
-.logo svg { width: 35px; height: 35px; }
-.brand { font-size: 19px; font-weight: 850; letter-spacing: .3px; }
-.tagline {
-  color: var(--muted);
-  font-size: 11px;
-  margin-top: 4px;
-  letter-spacing: 1.5px;
-}
-.pill {
-  margin-left: auto;
-  color: var(--bright);
-  background: #241737;
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  padding: 7px 10px;
-  font-size: 10px;
-}
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 25px 22px;
-  border-radius: 25px;
-  border: 1px solid #6c4190;
-  background: linear-gradient(135deg,#2a1940,#171121 72%);
-}
-.hero:after {
-  content: "✦";
-  position: absolute;
-  right: 18px;
-  top: 9px;
-  color: #a77aff;
-  font-size: 78px;
-  opacity: .18;
-  pointer-events: none;
-}
-.eyebrow {
-  color: var(--bright);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-.hero h1 {
-  font-size: clamp(27px,7vw,36px);
-  line-height: 1.13;
-  margin: 13px 0 10px;
-  max-width: 300px;
-}
-.hero p {
-  color: #c1b5d3;
-  line-height: 1.7;
-  font-size: 13px;
-  max-width: 300px;
-}
-.primary {
-  border: 0;
-  color: white;
-  font-weight: 800;
-  background: linear-gradient(100deg,#995cff,#7138d4);
-  border-radius: 13px;
-  padding: 13px 17px;
-  margin-top: 10px;
-  box-shadow: 0 6px 20px #7c3aed33;
-}
-.primary:active, .secondary:active { transform: scale(.98); }
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin: 28px 1px 14px;
-}
-.section-head h2 { font-size: 17px; margin: 0; }
-.section-head span { font-size: 11px; color: var(--muted); }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 12px;
-}
-.tile {
-  text-align: left;
-  min-width: 0;
-  padding: 17px 14px;
-  min-height: 145px;
-  color: var(--text);
-  background: linear-gradient(145deg,#1d1729,#14101d);
-  border: 1px solid var(--border);
-  border-radius: 19px;
-  transition: transform .15s,border-color .15s;
-}
-.tile:active { transform: scale(.97); }
-.tile:hover { border-color: var(--purple); }
-.tile-icon {
-  width: 43px;
-  height: 43px;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-  border-radius: 13px;
-  margin-bottom: 15px;
-  background: #382252;
-}
-.tile h3 { margin: 0 0 7px; font-size: 14px; }
-.tile p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
-.content-panel {
-  margin-top: 18px;
-  padding: 19px;
-  border: 1px solid var(--border);
-  background: var(--panel);
-  border-radius: 18px;
-}
-.content-panel h2 { font-size: 16px; margin: 0 0 10px; }
-.content-panel p { color: var(--muted); font-size: 13px; line-height: 1.7; }
-.status {
-  color: var(--bright);
-  font-size: 12px;
-  margin-top: 13px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-select, .secondary {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 13px;
-  background: #100d18;
-  color: white;
-}
-.secondary { margin-top: 10px; }
-.nav {
-  position: fixed;
-  z-index: 10;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(100%,520px);
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  padding: 12px 9px calc(12px + env(safe-area-inset-bottom));
-  background: #100d18f5;
-  border-top: 1px solid var(--border);
-  backdrop-filter: blur(16px);
-}
-.nav button {
-  background: transparent;
-  color: var(--muted);
-  border: 0;
-  font-size: 10px;
-  padding: 5px 0;
-}
-.nav button span { display: block; font-size: 20px; margin-bottom: 5px; }
-.nav button.active { color: var(--bright); }
-.page { display: none; }
-.page.active { display: block; }
-.small { font-size: 11px; color: var(--muted); text-align: center; margin-top: 25px; }
-
-/* Command Library */
-.command-controls {
-  display: grid;
-  gap: 10px;
-  margin-top: 14px;
-}
-.command-search {
-  width: 100%;
-  min-width: 0;
-  padding: 14px;
-  color: var(--text);
-  background: #100d18;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  outline: none;
-  font: inherit;
-}
-.command-search:focus { border-color: var(--purple); }
-.command-category { width: 100%; }
-.command-card {
-  margin-top: 12px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  background: linear-gradient(145deg,#1d1729,#14101d);
-  border-radius: 16px;
-}
-.command-card h3 {
-  margin: 0 0 8px;
-  font-size: 15px;
-  overflow-wrap: anywhere;
-}
-.command-card p {
-  margin: 8px 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
-}
-.command-code {
-  display: block;
-  padding: 11px;
-  margin-top: 10px;
-  color: #d8c3ff;
-  background: #0b0912;
-  border: 1px solid #34264c;
-  border-radius: 10px;
-  font-family: monospace;
-  font-size: 12px;
-  overflow-wrap: anywhere;
-  user-select: text;
-}
-.command-card .secondary { margin-top: 12px; }
-.command-note {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.7;
-}
-.command-empty {
-  padding: 20px 10px;
-  color: var(--muted);
-  text-align: center;
-  font-size: 13px;
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    transition: none !important;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090711">
+  <title>Sbalish Toolbox</title>
+  <style>
+    :root {
+      --bg: #090711;
+      --panel: #151222;
+      --panel2: #1c1730;
+      --purple: #9b5cff;
+      --text: #f5f0ff;
+      --muted: #a69bbd;
+      --border: #302442;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .app { max-width: 520px; margin: auto; min-height: 100vh; padding: 18px 16px 90px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .brand { font-weight: 900; letter-spacing: 1px; font-size: 20px; }
+    .brand span { color: var(--purple); }
+    .tagline { color: var(--muted); font-size: 10px; margin-top: 5px; letter-spacing: 2px; }
+    .beta { color: #d9b7ff; background: #28183d; border: 1px solid #57327d; border-radius: 20px; padding: 6px 10px; font-size: 11px; }
+    .hero {
+      margin-top: 25px; padding: 23px; border-radius: 22px;
+      background: linear-gradient(140deg, #27163d, #151222 70%);
+      border: 1px solid #47305e;
+    }
+    .hero .eyebrow { color: #c8a1ff; font-size: 11px; letter-spacing: 2px; }
+    h1 { font-size: 29px; line-height: 1.12; margin: 12px 0; }
+    p { color: var(--muted); line-height: 1.55; }
+    .primary {
+      border: 0; border-radius: 12px; padding: 13px 16px;
+      background: var(--purple); color: white; font-weight: bold;
+    }
+    .section-title { margin: 25px 0 13px; font-size: 17px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .tile, .panel {
+      text-align: left; color: var(--text); background: var(--panel);
+      border: 1px solid var(--border); border-radius: 16px; padding: 16px;
+    }
+    .tile { min-height: 140px; }
+    .tile:active, .primary:active { transform: scale(.98); }
+    .tile-icon { font-size: 25px; margin-bottom: 14px; }
+    .tile h3 { margin: 0 0 8px; font-size: 14px; }
+    .tile p { margin: 0; font-size: 12px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .panel { margin-bottom: 12px; }
+    .panel h3 { margin: 0 0 8px; }
+    .field {
+      width: 100%; padding: 12px; margin: 7px 0 12px;
+      color: white; background: #0d0a17; border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .muted { color: var(--muted); font-size: 12px; }
+    .command {
+      background: #0d0a17; padding: 12px; border-radius: 10px;
+      border: 1px solid var(--border); margin: 9px 0;
+      overflow-wrap: anywhere;
+    }
+    .command code { display: block; color: #d8baff; margin-bottom: 9px; }
+    .small-btn {
+      border: 1px solid #553b73; border-radius: 8px; color: white;
+      background: #28183d; padding: 8px 11px;
+    }
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 520px; display: grid; grid-template-columns: repeat(4, 1fr);
+      padding: 10px 8px calc(10px + env(safe-area-inset-bottom));
+      background: #100d1b; border-top: 1px solid var(--border); z-index: 10;
+    }
+    .bottom-nav button { color: var(--muted); background: transparent; border: 0; padding: 8px 2px; font-size: 11px; }
+    .bottom-nav button.active { color: #cba5ff; }
+    .notice { border-left: 3px solid var(--purple); padding: 10px 12px; background: #171023; font-size: 12px; color: var(--muted); border-radius: 5px; }
+  </style>
 </head>
-
 <body>
-<main class="app">
-  <header class="header">
-    <div class="logo" aria-label="Sbalish logo">
-      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path d="M20 3 35 11.5V28.5L20 37 5 28.5V11.5Z"
-          stroke="#fff" stroke-width="2.4"/>
-        <path d="M5 11.5 20 20 35 11.5M20 20V37"
-          stroke="#fff" stroke-width="2.4"/>
-        <path d="M13 7 28 15.5 20 20 12 15.5Z"
-          fill="#fff" opacity=".8"/>
-      </svg>
-    </div>
+<div class="app">
+  <header>
     <div>
-      <div class="brand">SBALISH TOOLBOX</div>
+      <div class="brand">SBALISH <span>TOOLBOX</span></div>
       <div class="tagline">BEDROCK COMPANION</div>
     </div>
-    <div class="pill">BETA</div>
+    <div class="beta">BETA</div>
   </header>
 
-  <section id="home" class="page active">
-    <div class="hero">
-      <div class="eyebrow">YOUR GAME. YOUR TOOLS.</div>
-      <h1>Your Minecraft toolkit.</h1>
-      <p>Explore useful guides, commands and resources for your Bedrock world.</p>
-      <button class="primary" onclick="showPage('tools')">Explore Toolbox ↗</button>
-    </div>
-
-    <div class="section-head">
-      <h2>Explore Tools</h2>
-      <span>4 FEATURES</span>
-    </div>
-
-    <div class="grid">
-      <button class="tile" onclick="showPage('version')">
-        <div class="tile-icon">📘</div>
-        <h3>Version Guide</h3>
-        <p>Choose a version and view your selection.</p>
-      </button>
-      <button class="tile" onclick="showPage('commands')">
-        <div class="tile-icon">⌘</div>
-        <h3>Command Library</h3>
-        <p>Search, filter and copy useful commands.</p>
-      </button>
-      <button class="tile" onclick="showPage('library')">
-        <div class="tile-icon">🧊</div>
-        <h3>Add-ons & Packs</h3>
-        <p>Explore resource categories.</p>
-      </button>
-      <button class="tile" onclick="showPage('tools')">
-        <div class="tile-icon">⚒️</div>
-        <h3>Crafting Helper</h3>
-        <p>Open the toolbox and crafting guide.</p>
-      </button>
-    </div>
-    <p class="small">Built for Bedrock players · Sbalish Toolbox</p>
-  </section>
-
-  <section id="tools" class="page">
-    <div class="section-head"><h2>Toolbox</h2><span>TOOLS</span></div>
-    <div class="content-panel">
-      <h2>⚒️ Crafting Helper</h2>
-      <p>Choose an item to view a basic crafting reminder.</p>
-      <select id="craftItem">
-        <option value="Pickaxe">Pickaxe</option>
-        <option value="Sword">Sword</option>
-        <option value="Torch">Torch</option>
-        <option value="Chest">Chest</option>
-      </select>
-      <button class="primary" onclick="craftInfo()">Show Guide</button>
-      <div id="craftStatus" class="status" aria-live="polite"></div>
-    </div>
-    <div class="content-panel">
-      <h2>Quick Note</h2>
-      <p>This toolbox is an independent companion. It does not modify Minecraft or install add-ons automatically.</p>
-      <button class="secondary" onclick="showPage('commands')">Open Command Library</button>
-    </div>
-  </section>
-
-  <section id="version" class="page">
-    <div class="section-head"><h2>Version Guide</h2><span>BEDROCK</span></div>
-    <div class="content-panel">
-      <h2>Choose a version</h2>
-      <select id="versionSelect">
-        <option value="Latest version">Latest version</option>
-        <option value="1.21">1.21</option>
-        <option value="1.20">1.20</option>
-      </select>
-      <button class="primary" onclick="checkVersion()">Confirm Selection</button>
-      <div id="versionStatus" class="status" aria-live="polite">Choose a version to begin.</div>
-      <p>Version selection is informational; live update checking is not connected yet.</p>
-    </div>
-  </section>
-
-  <section id="commands" class="page">
-    <div class="section-head">
-      <h2>Command Library</h2>
-      <span id="commandCount">0 COMMANDS</span>
-    </div>
-
-    <div class="content-panel">
-      <h2>⌘ Find a Command</h2>
-      <p>Search commands and copy them into your Minecraft world.</p>
-
-      <div class="command-controls">
-        <input
-          id="commandSearch"
-          class="command-search"
-          type="search"
-          placeholder="Search commands..."
-          aria-label="Search commands"
-          oninput="renderCommands()"
-        >
-        <select
-          id="commandCategory"
-          class="command-category"
-          aria-label="Filter commands"
-          onchange="renderCommands()"
-        >
-          <option value="all">All Categories</option>
-          <option value="time">Time</option>
-          <option value="weather">Weather</option>
-          <option value="teleport">Teleport</option>
-          <option value="gameplay">Gameplay</option>
-          <option value="items">Items</option>
-          <option value="world">World</option>
-        </select>
+  <main>
+    <section id="home" class="page active">
+      <div class="hero">
+        <div class="eyebrow">YOUR BEDROCK COMPANION</div>
+        <h1>Make your game<br>your own.</h1>
+        <p>Useful Minecraft Bedrock tools in one place.</p>
+        <button class="primary" onclick="openClickGUI()">⚡ Open Click GUI</button>
       </div>
 
-      <p class="command-note">
-        Some commands require cheats to be enabled and suitable permissions.
-        Availability may vary by Minecraft version and world settings.
-      </p>
-    </div>
+      <h2 class="section-title">Explore Tools</h2>
+      <div class="grid">
+        <button class="tile" onclick="showPage('version')">
+          <div class="tile-icon">🎮</div><h3>Version Guide</h3>
+          <p>Look up common Bedrock versions.</p>
+        </button>
+        <button class="tile" onclick="showPage('commands')">
+          <div class="tile-icon">⌨️</div><h3>Command Library</h3>
+          <p>Search and copy useful commands.</p>
+        </button>
+        <button class="tile" onclick="showPage('library')">
+          <div class="tile-icon">📦</div><h3>Add-ons & Packs</h3>
+          <p>Learn about packs and add-ons.</p>
+        </button>
+        <button class="tile" onclick="showPage('tools')">
+          <div class="tile-icon">🛠️</div><h3>Crafting Helper</h3>
+          <p>Quick crafting reference and notes.</p>
+        </button>
+        <button class="tile" onclick="openClickGUI()">
+          <div class="tile-icon">⚡</div><h3>Sbalish Click GUI</h3>
+          <p>Open the client menu and feature toggles.</p>
+        </button>
+      </div>
+      <p class="notice" style="margin-top:18px">Unofficial companion app. Not affiliated with or endorsed by Mojang or Microsoft.</p>
+    </section>
 
-    <div id="commandList"></div>
-    <div id="copyStatus" class="status" role="status" aria-live="polite"></div>
-  </section>
+    <section id="tools" class="page">
+      <h2 class="section-title">Tools</h2>
+      <div class="panel">
+        <h3>Crafting Helper</h3>
+        <p>Choose an item to view a basic crafting reminder.</p>
+        <select id="craftSelect" class="field">
+          <option value="table">Crafting Table</option>
+          <option value="torch">Torch</option>
+          <option value="chest">Chest</option>
+          <option value="sticks">Sticks</option>
+        </select>
+        <button class="primary" onclick="craftInfo()">Show Recipe</button>
+        <p id="craftResult">Choose an item above.</p>
+      </div>
+      <div class="panel">
+        <h3>Quick Note</h3>
+        <textarea id="quickNote" class="field" rows="5" placeholder="Write your game notes here..."></textarea>
+        <button class="primary" onclick="saveNote()">Save Note</button>
+        <button class="small-btn" onclick="clearNote()">Clear</button>
+        <p id="noteStatus" class="muted"></p>
+      </div>
+    </section>
 
-  <section id="library" class="page">
-    <div class="section-head"><h2>Resource Library</h2><span>LIBRARY</span></div>
-    <div class="content-panel">
-      <h2>🧱 Resource Packs</h2>
-      <p>Resource packs can change textures and sounds. Use packs that match your Minecraft version and download them from trusted sources.</p>
-    </div>
-    <div class="content-panel">
-      <h2>🧩 Add-ons</h2>
-      <p>Add-ons can introduce behaviors or content. Check compatibility and review permissions before installing.</p>
-    </div>
-  </section>
+    <section id="version" class="page">
+      <h2 class="section-title">Version Guide</h2>
+      <div class="panel">
+        <p>Select a version to see a reminder.</p>
+        <select id="versionSelect" class="field">
+          <option>Bedrock 1.21</option>
+          <option>Bedrock 1.20</option>
+          <option>Bedrock 1.19</option>
+          <option>Bedrock Preview</option>
+        </select>
+        <button class="primary" onclick="checkVersion()">Check Version</button>
+        <p id="versionResult">Choose a version.</p>
+      </div>
+      <p class="notice">This is a reference guide, not a live version checker. Check official release notes for the latest version.</p>
+    </section>
 
-  <section id="settings" class="page">
-    <div class="section-head"><h2>Settings</h2><span>APP</span></div>
-    <div class="content-panel">
-      <h2>SBALISH TOOLBOX</h2>
-      <p>Version 1.2.0 · Black & Purple Edition</p>
-      <p>Designed as a companion interface for Minecraft Bedrock players.</p>
-      <button class="secondary" onclick="showPage('home')">Back to Home</button>
-    </div>
-  </section>
-</main>
+    <section id="commands" class="page">
+      <h2 class="section-title">Command Library</h2>
+      <input id="commandSearch" class="field" placeholder="Search commands..." oninput="renderCommands()">
+      <div id="commandList"></div>
+      <p class="muted">Commands may require cheats or operator permissions in your world.</p>
+    </section>
 
-<nav class="nav" aria-label="Main navigation">
-  <button class="active" data-page="home" onclick="showPage('home')"><span>⌂</span>Home</button>
-  <button data-page="tools" onclick="showPage('tools')"><span>⚒</span>Tools</button>
-  <button data-page="library" onclick="showPage('library')"><span>▦</span>Library</button>
-  <button data-page="settings" onclick="showPage('settings')"><span>⚙</span>Settings</button>
+    <section id="library" class="page">
+      <h2 class="section-title">Add-ons & Packs</h2>
+      <div class="panel">
+        <h3>Resource Packs</h3>
+        <p>Resource packs can change textures, sounds, and some visual elements.</p>
+      </div>
+      <div class="panel">
+        <h3>Add-ons</h3>
+        <p>Add-ons may add or modify gameplay features. Check compatibility with your Minecraft version before installing.</p>
+      </div>
+      <div class="panel">
+        <h3>Safety Tips</h3>
+        <p>Download files only from sources you trust. Keep a backup of your worlds before installing packs.</p>
+      </div>
+    </section>
+
+    <section id="settings" class="page">
+      <h2 class="section-title">Settings</h2>
+      <div class="panel">
+        <h3>Sbalish Toolbox</h3>
+        <p>Version 1.0.0 · Bedrock Companion</p>
+        <button class="small-btn" onclick="openClickGUI()">Open Click GUI ⚡</button>
+      </div>
+      <div class="panel">
+        <h3>About</h3>
+        <p>This is an independent companion app. It does not inject code into Minecraft or modify the game process.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="bottom-nav">
+  <button class="active" data-page="home" onclick="showPage('home')">⌂<br>Home</button>
+  <button data-page="tools" onclick="showPage('tools')">⚒<br>Tools</button>
+  <button data-page="library" onclick="showPage('library')">▣<br>Library</button>
+  <button data-page="settings" onclick="showPage('settings')">⚙<br>Settings</button>
 </nav>
 
 <script>
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.toggle("active", page.id === id);
-  });
+  function openClickGUI() {
+    window.location.href = './clickgui.html';
+  }
 
-  document.querySelectorAll(".nav button").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === id);
-  });
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
 
-  if (id === "commands") renderCommands();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+    document.querySelectorAll('.bottom-nav button').forEach(b => {
+      b.classList.toggle('active', b.dataset.page === id);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-function checkVersion() {
-  const value = document.getElementById("versionSelect").value;
-  document.getElementById("versionStatus").textContent =
-    "Selected version: " + value +
-    ". Live update checking is not enabled.";
-}
-
-function craftInfo() {
-  const item = document.getElementById("craftItem").value;
-  const guides = {
-    Pickaxe: "A pickaxe uses 3 material items and 2 sticks in a crafting table. The material determines its type.",
-    Sword: "A sword uses 2 material items and 1 stick.",
-    Torch: "A torch uses coal or charcoal above a stick.",
-    Chest: "A chest uses 8 wooden planks around the outer crafting slots."
+  const recipes = {
+    table: '4 wooden planks → 1 Crafting Table.',
+    torch: '1 stick + 1 coal or charcoal → 4 Torches.',
+    chest: '8 wooden planks arranged around the outside → 1 Chest.',
+    sticks: '2 wooden planks stacked vertically → 4 Sticks.'
   };
 
-  document.getElementById("craftStatus").textContent = guides[item];
-}
-
-const commandData = [
-  {
-    title: "Set Day",
-    command: "/time set day",
-    category: "time",
-    description: "Changes the in-game time to day.",
-    note: "Requires command permissions."
-  },
-  {
-    title: "Set Night",
-    command: "/time set night",
-    category: "time",
-    description: "Changes the in-game time to night.",
-    note: "Requires command permissions."
-  },
-  {
-    title: "Set Noon",
-    command: "/time set noon",
-    category: "time",
-    description: "Sets the in-game time to noon.",
-    note: "Requires command permissions."
-  },
-  {
-    title: "Clear Weather",
-    command: "/weather clear",
-    category: "weather",
-    description: "Clears rain and thunderstorms.",
-    note: "Requires command permissions."
-  },
-  {
-    title: "Rainy Weather",
-    command: "/weather rain",
-    category: "weather",
-    description: "Changes the weather to rain.",
-    note: "Requires command permissions."
-  },
-  {
-    title: "Thunderstorm",
-    command: "/weather thunder",
-    category: "weather",
-    description: "Changes the weather to a thunderstorm.",
-    note: "Requires command permissions."
-  },
-  {
-    title: "Teleport Example",
-    command: "/tp @s 100 64 100",
-    category: "teleport",
-    description: "Teleports yourself to the example coordinates.",
-    note: "Replace 100 64 100 with your desired coordinates."
-  },
-  {
-    title: "Creative Mode",
-    command: "/gamemode creative @s",
-    category: "gameplay",
-    description: "Switches your game mode to Creative.",
-    note: "Requires permission to change game mode."
-  },
-  {
-    title: "Survival Mode",
-    command: "/gamemode survival @s",
-    category: "gameplay",
-    description: "Switches your game mode to Survival.",
-    note: "Requires permission to change game mode."
-  },
-  {
-    title: "Adventure Mode",
-    command: "/gamemode adventure @s",
-    category: "gameplay",
-    description: "Switches your game mode to Adventure.",
-    note: "Requires permission to change game mode."
-  },
-  {
-    title: "Give Diamonds",
-    command: "/give @s diamond 1",
-    category: "items",
-    description: "Gives yourself one diamond.",
-    note: "Requires permission to use /give."
-  },
-  {
-    title: "Give Golden Apple",
-    command: "/give @s golden_apple 1",
-    category: "items",
-    description: "Gives yourself one golden apple.",
-    note: "Requires permission to use /give."
-  },
-  {
-    title: "Give Torches",
-    command: "/give @s torch 64",
-    category: "items",
-    description: "Gives yourself 64 torches.",
-    note: "Requires permission to use /give."
-  },
-  {
-    title: "Set World Spawn",
-    command: "/setworldspawn",
-    category: "world",
-    description: "Sets the world spawn near your current position.",
-    note: "Requires command permissions."
-  },
-  {
-    title: "Keep Inventory",
-    command: "/gamerule keepinventory true",
-    category: "world",
-    description: "Keeps inventory after death where supported.",
-    note: "Requires permission to change game rules."
-  },
-  {
-    title: "Disable Keep Inventory",
-    command: "/gamerule keepinventory false",
-    category: "world",
-    description: "Disables the keep-inventory game rule.",
-    note: "Requires permission to change game rules."
-  },
-  {
-    title: "Show Coordinates",
-    command: "/gamerule showcoordinates true",
-    category: "world",
-    description: "Attempts to enable coordinate display.",
-    note: "Requires permission. Availability depends on version and world settings."
-  }
-];
-
-function renderCommands() {
-  const list = document.getElementById("commandList");
-  const searchInput = document.getElementById("commandSearch");
-  const categoryInput = document.getElementById("commandCategory");
-  const count = document.getElementById("commandCount");
-
-  if (!list || !searchInput || !categoryInput || !count) return;
-
-  const query = searchInput.value.trim().toLowerCase();
-  const category = categoryInput.value;
-
-  const filtered = commandData.filter(item => {
-    const matchesCategory =
-      category === "all" || item.category === category;
-
-    const searchable =
-      (item.title + " " + item.command + " " +
-       item.description + " " + item.note).toLowerCase();
-
-    return matchesCategory && searchable.includes(query);
-  });
-
-  count.textContent = filtered.length + " COMMANDS";
-
-  list.replaceChildren();
-
-  if (filtered.length === 0) {
-    const empty = document.createElement("div");
-    empty.className = "command-empty";
-    empty.textContent = "No commands found. Try another search.";
-    list.appendChild(empty);
-    return;
+  function craftInfo() {
+    const item = document.getElementById('craftSelect').value;
+    document.getElementById('craftResult').textContent = recipes[item] || 'Recipe unavailable.';
   }
 
-  filtered.forEach(item => {
-    const card = document.createElement("article");
-    card.className = "command-card";
+  function saveNote() {
+    const value = document.getElementById('quickNote').value;
+    try {
+      localStorage.setItem('sbalish-note', value);
+      document.getElementById('noteStatus').textContent = 'Note saved on this device.';
+    } catch (e) {
+      document.getElementById('noteStatus').textContent = 'Could not save the note in this browser.';
+    }
+  }
 
-    const title = document.createElement("h3");
-    title.textContent = item.title;
+  function clearNote() {
+    document.getElementById('quickNote').value = '';
+    try { localStorage.removeItem('sbalish-note'); } catch (e) {}
+    document.getElementById('noteStatus').textContent = 'Note cleared.';
+  }
 
-    const description = document.createElement("p");
-    description.textContent = item.description;
+  function checkVersion() {
+    const version = document.getElementById('versionSelect').value;
+    document.getElementById('versionResult').textContent =
+      version + ' selected. Check your installed game and official release notes for compatibility.';
+  }
 
-    const code = document.createElement("code");
-    code.className = "command-code";
-    code.textContent = item.command;
+  const commandData = [
+    ['/help', 'Show available commands'],
+    ['/gamemode survival', 'Switch to Survival mode'],
+    ['/gamemode creative', 'Switch to Creative mode'],
+    ['/time set day', 'Set the time to day'],
+    ['/time set night', 'Set the time to night'],
+    ['/weather clear', 'Clear the weather'],
+    ['/weather rain', 'Set rainy weather'],
+    ['/give @p apple 1', 'Give the nearest player an apple'],
+    ['/tp @p ~ ~10 ~', 'Teleport the nearest player 10 blocks up'],
+    ['/setworldspawn', 'Set the world spawn location'],
+    ['/spawnpoint', 'Set your spawn point'],
+    ['/gamerule keepinventory true', 'Keep inventory after death'],
+    ['/gamerule dodaylightcycle false', 'Stop the daylight cycle'],
+    ['/difficulty peaceful', 'Set Peaceful difficulty'],
+    ['/difficulty easy', 'Set Easy difficulty'],
+    ['/effect @p speed 30 1', 'Give the nearest player a speed effect'],
+    ['/clear @p', 'Clear the nearest player inventory']
+  ];
 
-    const note = document.createElement("p");
-    note.className = "command-note";
-    note.textContent = "Note: " + item.note;
+  function renderCommands() {
+    const query = (document.getElementById('commandSearch').value || '').toLowerCase();
+    const list = document.getElementById('commandList');
+    list.innerHTML = '';
+    const filtered = commandData.filter(item =>
+      item[0].toLowerCase().includes(query) || item[1].toLowerCase().includes(query)
+    );
 
-    const button = document.createElement("button");
-    button.className = "secondary";
-    button.type = "button";
-    button.textContent = "Copy Command";
-    button.addEventListener("click", () => copyCommand(item.command));
-
-    card.append(title, description, code, note, button);
-    list.appendChild(card);
-  });
-}
-
-async function copyCommand(command) {
-  const status = document.getElementById("copyStatus");
-
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(command);
-    } else {
-      const textarea = document.createElement("textarea");
-      textarea.value = command;
-      textarea.setAttribute("readonly", "");
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      textarea.style.pointerEvents = "none";
-      document.body.appendChild(textarea);
-      textarea.select();
-      textarea.setSelectionRange(0, textarea.value.length);
-
-      const copied = document.execCommand("copy");
-      textarea.remove();
-
-      if (!copied) throw new Error("Clipboard unavailable");
+    if (!filtered.length) {
+      list.textContent = 'No commands found.';
+      return;
     }
 
-    status.textContent = "✓ Copied: " + command;
-  } catch (error) {
-    status.textContent =
-      "Automatic copy failed. Select and copy this command: " + command;
+    filtered.forEach(item => {
+      const box = document.createElement('div');
+      box.className = 'command';
+
+      const code = document.createElement('code');
+      code.textContent = item[0];
+
+      const description = document.createElement('p');
+      description.textContent = item[1];
+
+      const button = document.createElement('button');
+      button.className = 'small-btn';
+      button.textContent = 'Copy command';
+      button.onclick = () => copyCommand(item[0], button);
+
+      box.append(code, description, button);
+      list.appendChild(box);
+    });
   }
-}
 
-renderCommands();
+  async function copyCommand(command, button) {
+    try {
+      await navigator.clipboard.writeText(command);
+      button.textContent = 'Copied!';
+    } catch (e) {
+      const area = document.createElement('textarea');
+      area.value = command;
+      document.body.appendChild(area);
+      area.select();
+      try {
+        document.execCommand('copy');
+        button.textContent = 'Copied!';
+      } catch (err) {
+        button.textContent = 'Copy unavailable';
+      }
+      area.remove();
+    }
+    setTimeout(() => button.textContent = 'Copy command', 1400);
+  }
 
-if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
-  });
-}
+  try {
+    document.getElementById('quickNote').value = localStorage.getItem('sbalish-note') || '';
+  } catch (e) {}
+
+  renderCommands();
+
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
 </script>
 </body>
 </html>
