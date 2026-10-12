@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10131c">
+  <title>Sbalish Toolbox</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #10131c;
+      color: white;
+      padding: 24px 16px;
+    }
+    .app {
+      max-width: 480px;
+      margin: 20px auto;
+    }
+    .logo {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      border-radius: 22px;
+      background: #7c4dff;
+      font-size: 32px;
+    }
+    h1, .subtitle { text-align: center; }
+    h1 { margin-bottom: 8px; }
+    .subtitle { color: #aab0c5; }
+    .panel {
+      background: #1b2030;
+      border: 1px solid #30364b;
+      border-radius: 18px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+    label { display: block; margin-bottom: 10px; }
+    select, button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    select {
+      background: #10131c;
+      color: white;
+      border: 1px solid #414963;
+    }
+    button {
+      border: 0;
+      margin-top: 14px;
+      background: #8b68ff;
+      color: white;
+      font-weight: bold;
+    }
+    .status {
+      color: #b6a4ff;
+      text-align: center;
+      margin-top: 18px;
+    }
+    .note {
+      color: #9ca4ba;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 22px;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="logo">⚒️</div>
+    <h1>Sbalish Toolbox</h1>
+    <p class="subtitle">Your Minecraft Bedrock companion</p>
+
+    <section class="panel">
+      <label for="version">Minecraft Bedrock version</label>
+      <select id="version">
+        <option value="latest">Latest version</option>
+        <option value="1.21">1.21</option>
+        <option value="1.20">1.20</option>
+      </select>
+      <button id="check">Check Selection</button>
+      <p class="status" id="status">Welcome to Sbalish Toolbox!</p>
+    </section>
+
+    <p class="note">
+      This is an initial interface preview.
+      Version selection does not check for updates.
+      No game modifications are installed by this page.
+    </p>
+  </main>
+
+  <script>
+    document.getElementById("check").addEventListener("click", function () {
+      const version = document.getElementById("version").value;
+      document.getElementById("status").textContent =
+        "Selected version: " + version;
+    });
+  </script>
+</body>
+</html>
